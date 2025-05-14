@@ -1,10 +1,10 @@
 <template>
   <div>
     <h2 class="text-2xl font-bold mb-4">Fiches de poste</h2>
-    <form @submit.prevent="createFiche" class="mb-6 flex gap-2">
+    <form @submit.prevent="createFiche" class="mb-6 flex flex-col gap-2">
       <input v-model="titre" placeholder="Titre" class="px-2 py-1 border rounded" required />
       <input v-model="entreprise" placeholder="Entreprise" class="px-2 py-1 border rounded" required />
-      <input v-model="description" placeholder="Description" class="px-2 py-1 border rounded" required />
+      <textarea v-model="description" placeholder="Description" class="px-2 py-1 border rounded" required />
       <button class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Ajouter</button>
     </form>
     <ul>
