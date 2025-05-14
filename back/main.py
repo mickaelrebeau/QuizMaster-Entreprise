@@ -7,7 +7,7 @@ import asyncio
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List
 import uvicorn
 
@@ -45,7 +45,7 @@ def get_password_hash(password):
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
-    expire = datetime.now(datetime.timezone.utc) + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
@@ -115,8 +115,8 @@ def get_quiz(quiz_id: int, db: Session = Depends(get_db)):
 
 # --- Génération de lien candidat ---
 @app.post("/candidat/lien")
-def generer_lien_candidat(quiz_id: int, email: str, db: Session = Depends(get_db)):
-    lien = crud.create_lien_candidat(db, quiz_id, email)
+def generer_lien_candidat(data: schemas.LienCandidatBase, db: Session = Depends(get_db)):
+    lien = crud.create_lien_candidat(db, data.quiz_id, data.email)
     return {"lien": f"/candidat/quiz/{lien.token}"}
 
 # --- Accès au quiz pour le candidat via token ---
@@ -182,7 +182,9 @@ def get_reponses_candidat(token: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Lien invalide")
     return crud.get_reponses_candidat(db, lien.id)
 
-
+@app.get("/quizzes", response_model=List[schemas.Quiz])
+def get_quizzes(db: Session = Depends(get_db)):
+    return crud.get_quizzes(db)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
