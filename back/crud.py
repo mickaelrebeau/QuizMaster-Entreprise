@@ -56,4 +56,7 @@ def create_reponse_candidat(db: Session, reponse: schemas.ReponseCandidatCreate)
     return db_reponse
 
 def get_reponses_candidat(db: Session, lien_candidat_id: int):
-    return db.query(models.ReponseCandidat).filter(models.ReponseCandidat.lien_candidat_id == lien_candidat_id).all() 
+    return db.query(models.ReponseCandidat).filter(models.ReponseCandidat.lien_candidat_id == lien_candidat_id).all()
+
+def get_quizzes(db: Session):
+    return db.query(models.Quiz).all() 
