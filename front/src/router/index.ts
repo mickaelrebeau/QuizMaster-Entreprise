@@ -7,18 +7,26 @@ import GenerateQuiz from '../pages/GenerateQuiz.vue'
 import Resultats from '../pages/Resultats.vue'
 import QuizCandidat from '../pages/QuizCandidat.vue'
 import Register from '../pages/Register.vue'
+import QuizList from "../pages/QuizList.vue";
+import QuizDetail from "../pages/QuizDetail.vue";
 
 const routes = [
-  { path: '/register', component: Register },
-  { path: '/login', component: Login },
-  { path: '/dashboard', component: DashboardRH, children: [
-    { path: '/fiches', component: FichesPoste },
-    { path: '/quiz', component: GenerateQuiz },
-    { path: '/resultats', component: Resultats },
-  ]},
-  { path: '/candidat/quiz/:token', component: QuizCandidat },
-  { path: '/', redirect: '/login' }
-]
+  { path: "/register", component: Register },
+  { path: "/login", component: Login },
+  {
+    path: "/dashboard",
+    component: DashboardRH,
+    children: [
+      { path: "/fiches", component: FichesPoste },
+      { path: "/quiz", component: GenerateQuiz },
+      { path: "/resultats", component: Resultats },
+      { path: "/quiz-list", component: QuizList },
+    ],
+  },
+  { path: "/quiz/:id", component: QuizDetail },
+  { path: "/candidat/quiz/:token", component: QuizCandidat },
+  { path: "/", redirect: "/login" },
+];
 
 const router = createRouter({
   history: createWebHistory(),
