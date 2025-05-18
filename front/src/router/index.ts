@@ -13,16 +13,11 @@ import QuizDetail from "../pages/QuizDetail.vue";
 const routes = [
   { path: "/register", component: Register },
   { path: "/login", component: Login },
-  {
-    path: "/dashboard",
-    component: DashboardRH,
-    children: [
-      { path: "/fiches", component: FichesPoste },
-      { path: "/quiz", component: GenerateQuiz },
-      { path: "/resultats", component: Resultats },
-      { path: "/quiz-list", component: QuizList },
-    ],
-  },
+  { path: "/dashboard", component: DashboardRH },
+  { path: "/fiches", component: FichesPoste },
+  { path: "/quiz", component: GenerateQuiz },
+  { path: "/resultats", component: Resultats },
+  { path: "/quiz-list", component: QuizList },
   { path: "/quiz/:id", component: QuizDetail },
   { path: "/candidat/quiz/:token", component: QuizCandidat },
   { path: "/", redirect: "/login" },
