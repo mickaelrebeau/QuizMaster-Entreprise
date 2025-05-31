@@ -1,6 +1,6 @@
 <template>
     <header
-        class="fixed top-3 left-1/2 -translate-x-1/2 mx-auto max-w-6xl w-full z-50 bg-gray-200 text-black px-8 py-4 flex items-center justify-between shadow rounded-full">
+        class="fixed top-3 left-1/2 -translate-x-1/2 mx-auto max-w-6xl w-full z-50 bg-white text-black px-8 py-4 flex items-center justify-between shadow rounded-full">
         <div class="text-xl font-bold">QuizMaster Entreprise</div>
         <nav class="flex items-center gap-4">
             <router-link to="/dashboard">
