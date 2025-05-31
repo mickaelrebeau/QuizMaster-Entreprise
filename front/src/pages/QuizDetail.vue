@@ -1,5 +1,5 @@
 <template>
-    <div v-if="quiz">
+    <div v-if="quiz" class="bg-white rounded-lg shadow p-6 flex flex-col">
         <h2 class="text-2xl font-bold mb-4">Détail du quiz : {{ quiz.titre }}</h2>
         <div class="mb-2 text-gray-600">ID : {{ quiz.id }} | Fiche de poste ID : {{ quiz.fiche_poste_id }}</div>
         <ul>
@@ -16,7 +16,7 @@
         <button @click="retour"
             class="mt-4 px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition">Retour</button>
     </div>
-    <div v-else>
+    <div v-else class="bg-white rounded-lg shadow p-6 flex flex-col">
         <p>Chargement...</p>
     </div>
 </template>
