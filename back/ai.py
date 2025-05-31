@@ -3,10 +3,27 @@ import asyncio
 import json
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
-OLLAMA_MODEL = "gemma3:27b"
+OLLAMA_MODEL = "gemma3:4b"
 
 async def generate_quiz(job_description: str, company_data: str):
-    prompt = f"Génère un quiz d'entretien pour ce poste : {job_description} en te basant sur : {company_data}"
+    prompt = f'''Génère un quiz d'entretien pour ce poste : {job_description} en te basant sur : {company_data}. Le quiz doit être composé de 20 questions.
+    Les questions doivent être de type QCM avec 4 réponses possibles.
+    Les réponses doivent être claires et concises.
+    Les réponses doivent être cohérentes avec la description du poste.
+    Les réponses doivent être cohérentes avec la description de l'entreprise.
+    
+    tu dois me faire un retour en json avec les questions et les réponses sous cette forme :
+    {{
+        "questions": [
+            {{
+                "question": "question",
+                "reponses": ["reponse1", "reponse2", "reponse3", "reponse4"],
+                "reponse_correcte": "reponse_correcte"
+            }}
+        ]
+    }}
+    je ne veux pas de commentaire, juste le json.
+'''
     payload = {
         "model": OLLAMA_MODEL,
         "messages": [
@@ -32,7 +49,6 @@ async def generate_quiz(job_description: str, company_data: str):
                         full_message += data["message"]["content"]
                 if not full_message:
                     raise ValueError("Aucune réponse utile reçue d'Ollama.")
-                
                 print(full_message)
                 return {"message": full_message}
         except Exception as e:
