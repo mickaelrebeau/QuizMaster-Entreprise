@@ -1,0 +1,179 @@
+{
+  "questions": [
+    {
+      "question": "Quelle version de Vue.js est principalement utilisée chez QuizMaster ?",
+      "reponses": [
+        "Vue.js 2",
+        "Vue.js 3",
+        "Vue.js 1",
+        "Aucune, nous n'utilisons pas Vue.js"
+      ],
+      "reponse_correcte": "Vue.js 3"
+    },
+    {
+      "question": "Quelle API est particulièrement mise en avant dans le développement chez QuizMaster ?",
+      "reponses": ["REST", "GraphQL", "SOAP", "XML-RPC"],
+      "reponse_correcte": "REST"
+    },
+    {
+      "question": "Quel est le principal objectif de QuizMaster ?",
+      "reponses": [
+        "Créer des jeux de quiz pour le divertissement",
+        "Révolutionner le recrutement grâce à l'IA",
+        "Développer des plateformes d'apprentissage en ligne",
+        "Vendre des quiz pré-faits"
+      ],
+      "reponse_correcte": "Révolutionner le recrutement grâce à l'IA"
+    },
+    {
+      "question": "Quel pattern de développement Vue.js est préféré chez QuizMaster ?",
+      "reponses": [
+        "Options API",
+        "Composition API",
+        "Render Functions",
+        "Templates"
+      ],
+      "reponse_correcte": "Composition API"
+    },
+    {
+      "question": "Quelle est l'importance du télétravail chez QuizMaster ?",
+      "reponses": [
+        "Il n'est pas autorisé",
+        "Il est possible, mais limité",
+        "Il est flexible et encouragé",
+        "Il est obligatoire pour tous les employés"
+      ],
+      "reponse_correcte": "Il est flexible et encouragé"
+    },
+    {
+      "question": "Quelle compétence serait un plus pour ce poste ?",
+      "reponses": [
+        "Connaissance de Photoshop",
+        "Appétence pour les technologies IA",
+        "Maîtrise de la comptabilité",
+        "Expérience en marketing digital"
+      ],
+      "reponse_correcte": "Appétence pour les technologies IA"
+    },
+    {
+      "question": "Quel est l'avantage principal de travailler chez QuizMaster ?",
+      "reponses": [
+        "Salaire élevé",
+        "Avantages sociaux exceptionnels",
+        "Possibilité de contribuer à un produit innovant",
+        "Environnement de travail formel et strict"
+      ],
+      "reponse_correcte": "Possibilité de contribuer à un produit innovant"
+    },
+    {
+      "question": "Quel framework CSS est mentionné comme option dans la description de poste ?",
+      "reponses": ["Bootstrap", "Material UI", "TailwindCSS", "Foundation"],
+      "reponse_correcte": "TailwindCSS"
+    },
+    {
+      "question": "Quel type de contrat est proposé chez QuizMaster ?",
+      "reponses": [
+        "CDI uniquement",
+        "CDD uniquement",
+        "Alternance uniquement",
+        "CDI / CDD / Alternance / Freelance"
+      ],
+      "reponse_correcte": "CDI / CDD / Alternance / Freelance"
+    },
+    {
+      "question": "Quelle version de JavaScript est attendue pour ce poste ?",
+      "reponses": ["ES5", "ES6+", "ES3", "Aucune exigence spécifique"],
+      "reponse_correcte": "ES6+"
+    },
+    {
+      "question": "Quel est le rôle principal du développeur Vue.js chez QuizMaster ?",
+      "reponses": [
+        "Gérer les réseaux sociaux",
+        "Développer et améliorer l'application front-end",
+        "Répondre aux appels clients",
+        "Gérer la comptabilité de l'entreprise"
+      ],
+      "reponse_correcte": "Développer et améliorer l'application front-end"
+    },
+    {
+      "question": "Qu'est-ce que l'API REST ?",
+      "reponses": [
+        "Un langage de programmation",
+        "Un protocole de communication pour les applications web",
+        "Un framework JavaScript",
+        "Une base de données"
+      ],
+      "reponse_correcte": "Un protocole de communication pour les applications web"
+    },
+    {
+      "question": "Quel est le niveau d'expérience minimum requis pour postuler ?",
+      "reponses": [
+        "Aucun",
+        "6 mois (alternance et stages inclus)",
+        "1 an (alternance et stages inclus)",
+        "5 ans"
+      ],
+      "reponse_correcte": "1 an (alternance et stages inclus)"
+    },
+    {
+      "question": "L'entreprise encourage-t-elle la formation continue ?",
+      "reponses": [
+        "Non",
+        "Uniquement pour les managers",
+        "Oui, par la participation à des meetups et conférences tech",
+        "Uniquement via des formations internes"
+      ],
+      "reponse_correcte": "Oui, par la participation à des meetups et conférences tech"
+    },
+    {
+      "question": "Quel est le but de l'intégration des APIs d'IA (OpenAI, Hugging Face, Ollama, etc.) ?",
+      "reponses": [
+        "Améliorer le design de l'application",
+        "Générer dynamiquement les contenus",
+        "Optimiser les performances de l'application",
+        "Sécuriser les données des utilisateurs"
+      ],
+      "reponse_correcte": "Générer dynamiquement les contenus"
+    },
+    {
+      "question": "Quel est le principal atout de QuizMaster par rapport à d'autres entreprises de recrutement ?",
+      "reponses": [
+        "Son ancienneté",
+        "Son grand nombre d'employés",
+        "Son utilisation de l'IA pour personnaliser les évaluations",
+        "Sa faible notoriété"
+      ],
+      "reponse_correcte": "Son utilisation de l'IA pour personnaliser les évaluations"
+    },
+    {
+      "question": "Qu'implique la nécessité d'être rigoureux(se) pour ce poste ?",
+      "reponses": [
+        "Respecter un code vestimentaire strict",
+        "Être à l'heure aux réunions",
+        "Écrire un code clair, testable et maintenable",
+        "Avoir une organisation impeccable"
+      ],
+      "reponse_correcte": "Écrire un code clair, testable et maintenable"
+    },
+    {
+      "question": "Quelle est la priorité de l'entreprise en termes d'environnement de travail ?",
+      "reponses": [
+        "Hiérarchie stricte",
+        "Formel et compétitif",
+        "Dynamique et bienveillant",
+        "Indépendant et autonome"
+      ],
+      "reponse_correcte": "Dynamique et bienveillant"
+    },
+    {
+      "question": "En quoi consiste l'amélioration continue du code ?",
+      "reponses": [
+        "Ajouter des commentaires",
+        "Corriger les erreurs",
+        "Refactorer le code pour le rendre plus lisible et efficace",
+        "Supprimer les lignes inutiles"
+      ],
+      "reponse_correcte": "Refactorer le code pour le rendre plus lisible et efficace"
+    }
+  ]
+}
