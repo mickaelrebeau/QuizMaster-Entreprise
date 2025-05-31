@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="bg-white rounded-lg shadow p-6 flex flex-col">
         <h2 class="text-2xl font-bold mb-4">Liste des quiz générés</h2>
         <ul>
             <li v-for="quiz in quizzes" :key="quiz.id" class="mb-4 p-4 border rounded">
                 <div class="flex justify-between items-center">
-                    <div>
-                        <strong>{{ quiz.titre }}</strong> <span class="text-sm text-gray-500">(ID: {{ quiz.id }})</span>
+                    <div class="flex flex-col mr-8">
+                        <strong>{{ quiz.titre }}</strong>
                         <br />
                         <span class="text-gray-600">Fiche de poste ID : {{ quiz.fiche_poste_id }}</span>
                     </div>
