@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 import models, schemas
 import uuid
+from sqlalchemy import func
+from datetime import datetime, timedelta
 
 def create_fiche_poste(db: Session, fiche: schemas.FichePosteCreate):
     db_fiche = models.FichePoste(**fiche.dict())
@@ -59,4 +61,43 @@ def get_reponses_candidat(db: Session, lien_candidat_id: int):
     return db.query(models.ReponseCandidat).filter(models.ReponseCandidat.lien_candidat_id == lien_candidat_id).all()
 
 def get_quizzes(db: Session):
-    return db.query(models.Quiz).all() 
+    return db.query(models.Quiz).all()
+
+def count_quizzes(db: Session):
+    return db.query(models.Quiz).count()
+
+def count_liens(db: Session):
+    return db.query(models.LienCandidat).count()
+
+def count_resultats(db: Session):
+    return db.query(models.Resultat).count()
+
+def count_resultats_en_attente(db: Session):
+    # Un lien sans résultat associé = en attente
+    total_liens = db.query(models.LienCandidat).count()
+    total_resultats = db.query(models.Resultat).count()
+    return total_liens - total_resultats
+
+def quizzes_per_month(db: Session, months: int = 12):
+    now = datetime.now()
+    start = now - timedelta(days=30*months)
+    results = (
+        db.query(
+            func.to_char(models.Quiz.date_creation, 'YYYY-MM').label('month'),
+            func.count(models.Quiz.id)
+        )
+        .filter(models.Quiz.date_creation >= start)
+        .group_by('month')
+        .order_by('month')
+        .all()
+    )
+    return results
+
+def score_distribution(db: Session):
+    # Exemple de tranches : 0-5, 6-10, 11-15, 16-20
+    bins = [(0,5), (6,10), (11,15), (16,20)]
+    dist = []
+    for b in bins:
+        count = db.query(models.Resultat).filter(models.Resultat.score >= b[0], models.Resultat.score <= b[1]).count()
+        dist.append({'range': f'{b[0]}-{b[1]}', 'count': count})
+    return dist 
