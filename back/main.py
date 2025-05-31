@@ -186,6 +186,29 @@ def get_reponses_candidat(token: str, db: Session = Depends(get_db)):
 def get_quizzes(db: Session = Depends(get_db)):
     return crud.get_quizzes(db)
 
+@app.get("/stats")
+def get_stats(db: Session = Depends(get_db)):
+    nb_quiz = crud.count_quizzes(db)
+    nb_liens = crud.count_liens(db)
+    nb_resultats_recus = crud.count_resultats(db)
+    nb_resultats_en_attente = crud.count_resultats_en_attente(db)
+    return {
+        "nb_quiz": nb_quiz,
+        "nb_liens": nb_liens,
+        "nb_resultats_recus": nb_resultats_recus,
+        "nb_resultats_en_attente": nb_resultats_en_attente
+    }
+
+@app.get("/stats/quizzes-per-month")
+def get_quizzes_per_month(db: Session = Depends(get_db)):
+    results = crud.quizzes_per_month(db)
+    # results = [(month, count), ...] => [{'month': month, 'count': count}, ...]
+    return [{"month": r[0], "count": r[1]} for r in results]
+
+@app.get("/stats/score-distribution")
+def get_score_distribution(db: Session = Depends(get_db)):
+    return crud.score_distribution(db)
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
