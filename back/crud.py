@@ -61,7 +61,7 @@ def get_reponses_candidat(db: Session, lien_candidat_id: int):
     return db.query(models.ReponseCandidat).filter(models.ReponseCandidat.lien_candidat_id == lien_candidat_id).all()
 
 def get_quizzes(db: Session):
-    return db.query(models.Quiz).all()
+    return db.query(models.Quiz).all() 
 
 def count_quizzes(db: Session):
     return db.query(models.Quiz).count()
