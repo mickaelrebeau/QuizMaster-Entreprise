@@ -11,16 +11,57 @@ import QuizList from "../pages/QuizList.vue";
 import QuizDetail from "../pages/QuizDetail.vue";
 
 const routes = [
-  { path: "/register", component: Register },
-  { path: "/login", component: Login },
-  { path: "/dashboard", component: DashboardRH },
-  { path: "/fiches", component: FichesPoste },
-  { path: "/quiz", component: GenerateQuiz },
-  { path: "/resultats", component: Resultats },
-  { path: "/quiz-list", component: QuizList },
-  { path: "/quiz/:id", component: QuizDetail },
-  { path: "/candidat/quiz/:token", component: QuizCandidat },
-  { path: "/", redirect: "/login" },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register
+  },
+  {
+    path: "/",
+    component: () => import("../layouts/MainLayout.vue"),
+    children: [
+      {
+        path: "dashboard",
+        name: "Home",
+        component: DashboardRH,
+      },
+      {
+        path: "fiches",
+        name: "Fiches",
+        component: FichesPoste,
+      },
+      {
+        path: "quiz",
+        name: "Quiz",
+        component: GenerateQuiz,
+      },
+      {
+        path: "resultats",
+        name: "Resultats",
+        component: Resultats,
+      },
+      {
+        path: "quiz-list",
+        name: "QuizList",
+        component: QuizList,
+      },
+      {
+        path: "quiz/:id",
+        name: "QuizDetail",
+        component: QuizDetail,
+      },
+      {
+        path: "candidat/quiz/:token",
+        name: "QuizCandidat",
+        component: QuizCandidat,
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
