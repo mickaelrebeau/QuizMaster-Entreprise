@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Body
 from database import engine, Base, SessionLocal
 import models, ai, crud, schemas
 from fastapi.middleware.cors import CORSMiddleware
@@ -132,12 +132,57 @@ def get_quiz_candidat(token: str, db: Session = Depends(get_db)):
 
 # --- Soumission des réponses (simplifiée) ---
 @app.post("/candidat/quiz/{token}/repondre")
-def repondre_quiz(token: str, score: int, db: Session = Depends(get_db)):
+def repondre_quiz(token: str, db: Session = Depends(get_db), body: dict = Body(...)):
     lien = crud.get_lien_candidat(db, token)
     if not lien:
         raise HTTPException(status_code=404, detail="Lien invalide")
+    score = body.get("score")
+    reponses = body.get("reponses", [])
+    # Sauvegarde du score
     resultat = crud.create_resultat(db, schemas.ResultatCreate(lien_candidat_id=lien.id, score=score))
-    return {"resultat_id": resultat.id}
+    # Sauvegarde des réponses du candidat
+    for rep in reponses:
+        # On cherche la question, sinon on la crée
+        question_obj = db.query(models.Question).filter(models.Question.texte == rep["question"]).first()
+        if not question_obj:
+            # On relie la question au quiz du lien
+            question_obj = models.Question(texte=rep["question"], quiz_id=lien.quiz_id)
+            db.add(question_obj)
+            db.commit()
+            db.refresh(question_obj)
+            print(f"[LOG] Question créée : {rep['question']}")
+        # On cherche la réponse, sinon on la crée
+        reponse_obj = db.query(models.Reponse).filter(models.Reponse.texte == rep["reponse"], models.Reponse.question_id == question_obj.id).first()
+        if not reponse_obj:
+            reponse_obj = models.Reponse(texte=rep["reponse"], question_id=question_obj.id, is_correct=False)
+            db.add(reponse_obj)
+            db.commit()
+            db.refresh(reponse_obj)
+            print(f"[LOG] Réponse créée : {rep['reponse']} pour question {rep['question']}")
+        crud.create_reponse_candidat(db, schemas.ReponseCandidatCreate(
+            lien_candidat_id=lien.id,
+            question_id=question_obj.id,
+            reponse_id=reponse_obj.id
+        ))
+    return {"resultat_id": resultat.id, "msg": "Réponses et score enregistrés"}
+
+@app.get("/candidat/quiz/{token}/reponses-detaillees")
+def get_reponses_detaillees(token: str, db: Session = Depends(get_db)):
+    lien = crud.get_lien_candidat(db, token)
+    if not lien:
+        raise HTTPException(status_code=404, detail="Lien invalide")
+    reponses_candidat = crud.get_reponses_candidat(db, lien.id)
+    result = []
+    for rep_cand in reponses_candidat:
+        question = db.query(models.Question).filter(models.Question.id == rep_cand.question_id).first()
+        reponse = db.query(models.Reponse).filter(models.Reponse.id == rep_cand.reponse_id).first()
+        bonne_reponse = db.query(models.Reponse).filter(models.Reponse.question_id == question.id, models.Reponse.is_correct == True).first()
+        result.append({
+            "question": question.texte if question else None,
+            "reponse_choisie": reponse.texte if reponse else None,
+            "bonne_reponse": bonne_reponse.texte if bonne_reponse else None
+        })
+    return result
 
 # --- Résultats pour un quiz ---
 @app.get("/quiz/{quiz_id}/resultats")
