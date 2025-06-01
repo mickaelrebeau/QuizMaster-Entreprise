@@ -4,8 +4,10 @@
         <ul>
             <li v-for="quiz in quizzes" :key="quiz.id" class="mb-4 p-4 border rounded">
                 <div class="flex justify-between items-center">
-                    <div class="flex flex-col mr-8">
+                    <div class="flex flex-col mr-8 text-left">
                         <strong>{{ quiz.titre }}</strong>
+                        <br />
+                        <span class="text-gray-600">Quiz ID : {{ quiz.id }}</span>
                         <br />
                         <span class="text-gray-600">Fiche de poste ID : {{ quiz.fiche_poste_id }}</span>
                     </div>
