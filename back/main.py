@@ -10,6 +10,8 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from datetime import datetime, timedelta, timezone
 from typing import List
 import uvicorn
+import json
+import re
 
 app = FastAPI()
 
@@ -97,11 +99,50 @@ async def generer_quiz(fiche_id: int, db: Session = Depends(get_db)):
     fiche = crud.get_fiche_poste(db, fiche_id)
     if not fiche:
         raise HTTPException(status_code=404, detail="Fiche de poste non trouvée")
-    # Appel à l'IA pour générer les questions
-    result = await ai.generate_quiz(fiche.description, fiche.entreprise)
-    # On suppose que l'IA retourne une liste de questions (à adapter selon le retour réel)
-    questions = result.get("questions", [])
-    quiz_data = schemas.QuizCreate(titre=f"Quiz pour {fiche.titre}", fiche_poste_id=fiche.id, questions=[schemas.QuestionCreate(texte=q) for q in questions])
+    max_attempts = 5
+    for attempt in range(max_attempts):
+        result = await ai.generate_quiz(fiche.description, fiche.entreprise)
+        try:
+            ia_json = result.get("message")
+            if isinstance(ia_json, str):
+                match = re.search(r"\{.*\}", ia_json, re.DOTALL)
+                if match:
+                    ia_json = json.loads(match.group(0))
+                else:
+                    raise ValueError("Aucun JSON trouvé dans la réponse IA :\n" + ia_json)
+            # Validation stricte : doit contenir une liste non vide de questions
+            questions = ia_json.get("questions", [])
+            if not isinstance(questions, list) or not questions:
+                raise ValueError("Le JSON IA ne contient pas de questions valides.")
+            # Validation de la structure de chaque question
+            for q in questions:
+                if not (isinstance(q, dict) and "question" in q and "reponses" in q and "reponse_correcte" in q):
+                    raise ValueError(f"Question mal formée : {q}")
+                if not (isinstance(q["reponses"], list) and len(q["reponses"]) == 4):
+                    raise ValueError(f"Question sans 4 réponses : {q}")
+            break  # JSON valide, on sort de la boucle
+        except Exception as e:
+            print(f"[Tentative {attempt+1}] Erreur parsing JSON IA:", e)
+            print("Réponse brute IA:", result.get("message"))
+            if attempt == max_attempts - 1:
+                raise HTTPException(status_code=500, detail=f"Impossible d'obtenir un quiz IA valide après {max_attempts} tentatives.")
+            continue  # On relance la génération
+    # On prépare les questions et réponses pour l'enregistrement
+    questions_data = []
+    for q in questions:
+        reponses = []
+        for rep in q.get("reponses", []):
+            is_correct = (rep == q.get("reponse_correcte"))
+            reponses.append(schemas.ReponseCreate(texte=rep, is_correct=is_correct))
+        questions_data.append(schemas.QuestionCreate(
+            texte=q.get("question", ""),
+            reponses=reponses
+        ))
+    quiz_data = schemas.QuizCreate(
+        titre=f"Quiz pour {fiche.titre}",
+        fiche_poste_id=fiche.id,
+        questions=questions_data
+    )
     quiz = crud.create_quiz(db, quiz_data, createur_id=1)  # TODO: remplacer par l'ID du RH connecté
     return {"quiz_id": quiz.id}
 
@@ -136,14 +177,16 @@ def repondre_quiz(token: str, db: Session = Depends(get_db), body: dict = Body(.
     lien = crud.get_lien_candidat(db, token)
     if not lien:
         raise HTTPException(status_code=404, detail="Lien invalide")
-    score = body.get("score")
     reponses = body.get("reponses", [])
-    # Sauvegarde du score
-    resultat = crud.create_resultat(db, schemas.ResultatCreate(lien_candidat_id=lien.id, score=score))
-    # Sauvegarde des réponses du candidat
+    score = 0
     for rep in reponses:
-        # On cherche la question, sinon on la crée
         question_obj = db.query(models.Question).filter(models.Question.texte == rep["question"]).first()
+        if not question_obj:
+            continue
+        bonne_reponse = db.query(models.Reponse).filter(models.Reponse.question_id == question_obj.id, models.Reponse.is_correct == True).first()
+        if bonne_reponse and rep["reponse"] == bonne_reponse.texte:
+            score += 1
+        # On cherche la question, sinon on la crée
         if not question_obj:
             # On relie la question au quiz du lien
             question_obj = models.Question(texte=rep["question"], quiz_id=lien.quiz_id)
@@ -164,7 +207,9 @@ def repondre_quiz(token: str, db: Session = Depends(get_db), body: dict = Body(.
             question_id=question_obj.id,
             reponse_id=reponse_obj.id
         ))
-    return {"resultat_id": resultat.id, "msg": "Réponses et score enregistrés"}
+    # Enregistre le score calculé
+    resultat = crud.create_resultat(db, schemas.ResultatCreate(lien_candidat_id=lien.id, score=score))
+    return {"resultat_id": resultat.id, "score": score, "msg": "Réponses et score enregistrés"}
 
 @app.get("/candidat/quiz/{token}/reponses-detaillees")
 def get_reponses_detaillees(token: str, db: Session = Depends(get_db)):
