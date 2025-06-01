@@ -11,6 +11,14 @@
                             réponse)</span>
                     </li>
                 </ul>
+                <div v-if="reponsesCandidats[q.id] && reponsesCandidats[q.id].length" class="mt-2">
+                    <div class="font-semibold text-sm text-blue-700">Réponses des candidats :</div>
+                    <ul class="ml-4">
+                        <li v-for="(rep, idx) in reponsesCandidats[q.id]" :key="idx" class="text-sm">
+                            - {{ rep }}
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
         <button @click="retour"
@@ -27,6 +35,7 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 const quiz = ref(null)
+const reponsesCandidats = ref({})
 
 function handle401(res) {
     if (res.status === 401) {
@@ -42,9 +51,27 @@ onMounted(async () => {
     const res = await fetch(`http://localhost:8000/quiz/${route.params.id}`, {
         headers: token ? { 'Authorization': `Bearer ${token}` } : {}
     })
+    console.log(res)
     if (handle401(res)) return
     if (res.ok) {
         quiz.value = await res.json()
+        // Récupérer les réponses des candidats pour chaque question (optionnel)
+        // On suppose un endpoint /quiz/{id}/resultats qui retourne les résultats et réponses
+        const res2 = await fetch(`http://localhost:8000/quiz/${route.params.id}/resultats`)
+        if (res2.ok) {
+            const resultats = await res2.json()
+            // On construit un mapping question_id -> [réponses choisies]
+            const map = {}
+            for (const resultat of resultats) {
+                if (resultat.reponses_candidats) {
+                    for (const rep of resultat.reponses_candidats) {
+                        if (!map[rep.question_id]) map[rep.question_id] = []
+                        map[rep.question_id].push(rep.texte)
+                    }
+                }
+            }
+            reponsesCandidats.value = map
+        }
     }
 })
 
