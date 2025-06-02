@@ -177,6 +177,10 @@ def repondre_quiz(token: str, db: Session = Depends(get_db), body: dict = Body(.
     lien = crud.get_lien_candidat(db, token)
     if not lien:
         raise HTTPException(status_code=404, detail="Lien invalide")
+    # Vérification : le candidat a-t-il déjà répondu ?
+    deja_repondu = db.query(models.Resultat).filter(models.Resultat.lien_candidat_id == lien.id).first()
+    if deja_repondu:
+        raise HTTPException(status_code=400, detail="Vous avez déjà répondu à ce quiz.")
     reponses = body.get("reponses", [])
     score = 0
     for rep in reponses:
