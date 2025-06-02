@@ -24,6 +24,11 @@ def create_quiz(db: Session, quiz: schemas.QuizCreate, createur_id: int):
         db.add(db_question)
         db.commit()
         db.refresh(db_question)
+        # Ajout des réponses pour chaque question
+        for rep in q.reponses:
+            db_reponse = models.Reponse(texte=rep.texte, is_correct=rep.is_correct, question_id=db_question.id)
+            db.add(db_reponse)
+        db.commit()
     return db_quiz
 
 def get_quiz(db: Session, quiz_id: int):
@@ -100,4 +105,18 @@ def score_distribution(db: Session):
     for b in bins:
         count = db.query(models.Resultat).filter(models.Resultat.score >= b[0], models.Resultat.score <= b[1]).count()
         dist.append({'range': f'{b[0]}-{b[1]}', 'count': count})
-    return dist 
+    return dist
+
+def delete_quiz(db: Session, quiz_id: int):
+    quiz = db.query(models.Quiz).filter(models.Quiz.id == quiz_id).first()
+    if not quiz:
+        return False
+    # Supprimer les réponses associées à chaque question
+    for question in quiz.questions:
+        db.query(models.Reponse).filter(models.Reponse.question_id == question.id).delete()
+    # Supprimer les questions
+    db.query(models.Question).filter(models.Question.quiz_id == quiz_id).delete()
+    # Supprimer le quiz
+    db.delete(quiz)
+    db.commit()
+    return True 
