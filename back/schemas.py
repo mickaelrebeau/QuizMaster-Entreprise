@@ -30,14 +30,6 @@ class FichePoste(FichePosteBase):
 class QuestionBase(BaseModel):
     texte: str
 
-class QuestionCreate(QuestionBase):
-    pass
-
-class Question(QuestionBase):
-    id: int
-    class Config:
-        orm_mode = True
-
 class ReponseBase(BaseModel):
     texte: str
     is_correct: Optional[bool] = False
@@ -47,6 +39,15 @@ class ReponseCreate(ReponseBase):
 
 class Reponse(ReponseBase):
     id: int
+    class Config:
+        orm_mode = True
+
+class QuestionCreate(QuestionBase):
+    reponses: List[ReponseCreate]
+
+class Question(QuestionBase):
+    id: int
+    reponses: List[Reponse] = []
     class Config:
         orm_mode = True
 
