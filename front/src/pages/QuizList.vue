@@ -23,7 +23,7 @@
                 </div>
             </li>
         </ul>
-        <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-black/50">
             <div class="bg-white p-6 rounded shadow w-full max-w-md">
                 <h3 class="text-lg font-bold mb-2">Générer un lien pour un candidat</h3>
                 <form @submit.prevent="genererLienCandidat">
