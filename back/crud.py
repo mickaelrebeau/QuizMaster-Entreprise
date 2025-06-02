@@ -105,7 +105,7 @@ def score_distribution(db: Session):
     for b in bins:
         count = db.query(models.Resultat).filter(models.Resultat.score >= b[0], models.Resultat.score <= b[1]).count()
         dist.append({'range': f'{b[0]}-{b[1]}', 'count': count})
-    return dist
+    return dist 
 
 def delete_quiz(db: Session, quiz_id: int):
     quiz = db.query(models.Quiz).filter(models.Quiz.id == quiz_id).first()
