@@ -17,6 +17,8 @@
                         <button @click="ouvrirModalLien(quiz.id)"
                             class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition">Générer lien
                             candidat</button>
+                        <button @click="supprimerQuiz(quiz.id)"
+                            class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition">Supprimer</button>
                     </div>
                 </div>
             </li>
@@ -101,6 +103,21 @@ async function genererLienCandidat() {
     if (res.ok) {
         const data = await res.json()
         lienCandidat.value = window.location.origin + data.lien
+    }
+}
+
+async function supprimerQuiz(id) {
+    if (!confirm('Voulez-vous vraiment supprimer ce quiz ?')) return;
+    const token = localStorage.getItem('token')
+    const res = await fetch(`http://localhost:8000/quiz/${id}`, {
+        method: 'DELETE',
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+    })
+    if (handle401(res)) return
+    if (res.ok) {
+        quizzes.value = quizzes.value.filter(q => q.id !== id)
+    } else {
+        alert('Erreur lors de la suppression du quiz.')
     }
 }
 </script>
