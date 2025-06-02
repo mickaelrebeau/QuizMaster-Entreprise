@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status, Body
+from fastapi import FastAPI, Depends, HTTPException, status, Body, Request
 from database import engine, Base, SessionLocal
 import models, ai, crud, schemas
 from fastapi.middleware.cors import CORSMiddleware
@@ -298,6 +298,13 @@ def get_quizzes_per_month(db: Session = Depends(get_db)):
 @app.get("/stats/score-distribution")
 def get_score_distribution(db: Session = Depends(get_db)):
     return crud.score_distribution(db)
+
+@app.delete("/quiz/{quiz_id}")
+def delete_quiz_endpoint(quiz_id: int, db: Session = Depends(get_db)):
+    success = crud.delete_quiz(db, quiz_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Quiz non trouvé")
+    return {"msg": "Quiz supprimé"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
