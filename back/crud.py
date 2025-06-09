@@ -79,9 +79,11 @@ def count_resultats(db: Session):
 
 def count_resultats_en_attente(db: Session):
     # Un lien sans résultat associé = en attente
-    total_liens = db.query(models.LienCandidat).count()
-    total_resultats = db.query(models.Resultat).count()
-    return total_liens - total_resultats
+    liens_sans_resultat = db.query(models.LienCandidat).outerjoin(
+        models.Resultat,
+        models.LienCandidat.id == models.Resultat.lien_candidat_id
+    ).filter(models.Resultat.id == None).count()
+    return liens_sans_resultat
 
 def quizzes_per_month(db: Session, months: int = 12):
     now = datetime.now()
