@@ -9,17 +9,18 @@ import QuizCandidat from '../pages/QuizCandidat.vue'
 import Register from '../pages/Register.vue'
 import QuizList from "../pages/QuizList.vue";
 import QuizDetail from "../pages/QuizDetail.vue";
+import LiensCandidats from "../pages/LiensCandidats.vue";
 
 const routes = [
   {
     path: "/login",
     name: "Login",
-    component: Login
+    component: Login,
   },
   {
     path: "/register",
     name: "Register",
-    component: Register
+    component: Register,
   },
   {
     path: "/",
@@ -59,6 +60,11 @@ const routes = [
         path: "candidat/quiz/:token",
         name: "QuizCandidat",
         component: QuizCandidat,
+      },
+      {
+        path: "liens-candidats",
+        name: "LiensCandidats",
+        component: LiensCandidats,
       },
     ],
   },
