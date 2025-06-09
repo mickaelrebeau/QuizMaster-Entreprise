@@ -53,6 +53,7 @@ class LienCandidat(Base):
     quiz_id = Column(Integer, ForeignKey('quizzes.id'))
     token = Column(String, unique=True, index=True)
     email = Column(String)
+    date_creation = Column(DateTime, default=datetime.datetime.utcnow)
     quiz = relationship('Quiz')
 
 class Resultat(Base):
