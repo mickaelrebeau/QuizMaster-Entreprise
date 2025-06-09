@@ -15,9 +15,14 @@
     <div v-if="resultatsFetched && resultats.length === 0" class="text-center text-gray-500 mt-4">
       Aucun résultat trouvé pour ce quiz.
     </div>
-    <div v-if="showDetail" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div class="bg-white p-6 rounded shadow w-full max-w-2xl relative">
-        <button @click="fermerDetail" class="absolute top-2 right-2 text-gray-500 hover:text-black">✕</button>
+    <div v-if="showDetail"
+      class="fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-y-auto"
+      @click.self="fermerDetail" @keydown.esc="fermerDetail" tabindex="0">
+      <div class="bg-white mt-8 p-6 rounded shadow w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
+        <button @click="fermerDetail"
+          class="absolute top-2 right-2 text-gray-500 hover:text-black p-2 rounded-full hover:bg-gray-100 transition">
+          ✕
+        </button>
         <h3 class="text-lg font-bold mb-4">Réponses détaillées du candidat</h3>
         <ul>
           <li v-for="(rep, idx) in reponsesDetaillees" :key="idx" class="mb-3 p-2 border rounded">
@@ -37,12 +42,27 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+
 const quizId = ref('')
 const resultats = ref([])
 const resultatsFetched = ref(false)
 const showDetail = ref(false)
 const reponsesDetaillees = ref([])
+
+function handleEscape(e) {
+  if (e.key === 'Escape' && showDetail.value) {
+    fermerDetail()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleEscape)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleEscape)
+})
 
 async function fetchResultats() {
   const res = await fetch(`http://localhost:8000/quiz/${quizId.value}/resultats`)
@@ -55,11 +75,6 @@ async function fetchResultats() {
 }
 
 async function voirReponses(res) {
-  // On suppose que le résultat contient un lien_candidat_id ou un token associé
-  // Ici, on va chercher le token via le résultat (à adapter si besoin)
-  // Pour l'exemple, on suppose que le résultat contient un champ lien_candidat_id
-  // Il faut donc faire une requête pour retrouver le token à partir de l'id
-  // Pour simplifier, on demande le token à l'utilisateur
   const token = prompt('Entrer le token du candidat pour ce résultat :')
   if (!token) return
   const r = await fetch(`http://localhost:8000/candidat/quiz/${token}/reponses-detaillees`)
@@ -68,6 +83,7 @@ async function voirReponses(res) {
     showDetail.value = true
   }
 }
+
 function fermerDetail() {
   showDetail.value = false
   reponsesDetaillees.value = []
