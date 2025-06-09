@@ -3,9 +3,9 @@
         <h2 class="text-2xl font-bold mb-4">Détail du quiz : {{ quiz.titre }}</h2>
         <div class="mb-2 text-gray-600">ID : {{ quiz.id }} | Fiche de poste ID : {{ quiz.fiche_poste_id }}</div>
         <ul>
-            <li v-for="q in quiz.questions" :key="q.id" class="mb-4 p-2 border rounded">
+            <li v-for="q in quiz.questions" :key="q.id" class="mb-4 p-2 border rounded text-left">
                 <div class="font-semibold mb-1">Question : {{ q.texte }}</div>
-                <ul class="ml-4">
+                <ul class="ml-4 mt-4">
                     <li v-for="r in q.reponses || []" :key="r.id" class="text-gray-700">
                         - {{ r.texte }} <span v-if="r.is_correct" class="text-green-600 font-bold">(Bonne
                             réponse)</span>
