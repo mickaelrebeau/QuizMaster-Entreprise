@@ -8,15 +8,16 @@
     <ul>
       <li v-for="res in resultats" :key="res.id" class="mb-2 p-2 border rounded">
         Score : <strong>{{ res.score }}</strong> — Date : {{ new Date(res.date).toLocaleString() }}
-        <button @click="voirReponses(res)"
-          class="ml-4 px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition">Voir réponses</button>
+        <button @click="ouvrirModalToken(res)"
+          class="ml-4 px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition">Voir les
+          réponses</button>
       </li>
     </ul>
     <div v-if="resultatsFetched && resultats.length === 0" class="text-center text-gray-500 mt-4">
       Aucun résultat trouvé pour ce quiz.
     </div>
-    <div v-if="showDetail"
-      class="fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-y-auto"
+
+    <div v-if="showDetail" class="fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-y-auto"
       @click.self="fermerDetail" @keydown.esc="fermerDetail" tabindex="0">
       <div class="bg-white mt-8 p-6 rounded shadow w-full max-w-2xl max-h-[90vh] overflow-y-auto relative">
         <button @click="fermerDetail"
@@ -38,6 +39,29 @@
         </ul>
       </div>
     </div>
+
+    <div v-if="showTokenModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-sm">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold">Entrer le token</h3>
+          <button @click="fermerTokenModal" class="text-gray-500 hover:text-gray-700">
+            <span class="text-2xl">&times;</span>
+          </button>
+        </div>
+        <form @submit.prevent="soumettreToken" class="flex flex-col gap-4">
+          <input v-model="tokenInput" placeholder="Token du candidat" class="px-2 py-1 border rounded" required />
+          <div class="flex justify-end gap-2">
+            <button type="button" @click="fermerTokenModal"
+              class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition">
+              Annuler
+            </button>
+            <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+              Valider
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -49,6 +73,9 @@ const resultats = ref([])
 const resultatsFetched = ref(false)
 const showDetail = ref(false)
 const reponsesDetaillees = ref([])
+const showTokenModal = ref(false)
+const tokenInput = ref('')
+const resultatSelectionne = ref(null)
 
 function handleEscape(e) {
   if (e.key === 'Escape' && showDetail.value) {
@@ -74,13 +101,27 @@ async function fetchResultats() {
   resultatsFetched.value = true
 }
 
-async function voirReponses(res) {
-  const token = prompt('Entrer le token du candidat pour ce résultat :')
-  if (!token) return
-  const r = await fetch(`http://localhost:8000/candidat/quiz/${token}/reponses-detaillees`)
+function ouvrirModalToken(res) {
+  resultatSelectionne.value = res
+  showTokenModal.value = true
+  tokenInput.value = ''
+}
+
+function fermerTokenModal() {
+  showTokenModal.value = false
+  tokenInput.value = ''
+  resultatSelectionne.value = null
+}
+
+async function soumettreToken() {
+  if (!tokenInput.value) return
+  const r = await fetch(`http://localhost:8000/candidat/quiz/${tokenInput.value}/reponses-detaillees`)
   if (r.ok) {
     reponsesDetaillees.value = await r.json()
     showDetail.value = true
+    fermerTokenModal()
+  } else {
+    alert('Token invalide')
   }
 }
 
