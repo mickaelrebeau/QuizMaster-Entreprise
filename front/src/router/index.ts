@@ -23,6 +23,17 @@ const routes = [
     component: Register,
   },
   {
+    path: "/candidat/quiz/:token",
+    name: "QuizCandidat",
+    component: () => import("../layouts/SimpleLayout.vue"),
+    children: [
+      {
+        path: "",
+        component: QuizCandidat,
+      },
+    ],
+  },
+  {
     path: "/",
     component: () => import("../layouts/MainLayout.vue"),
     children: [
@@ -55,11 +66,6 @@ const routes = [
         path: "quiz/:id",
         name: "QuizDetail",
         component: QuizDetail,
-      },
-      {
-        path: "candidat/quiz/:token",
-        name: "QuizCandidat",
-        component: QuizCandidat,
       },
       {
         path: "liens-candidats",
