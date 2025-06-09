@@ -79,7 +79,6 @@
       </div>
     </div>
 
-    <!-- Messages -->
     <div v-if="msg" class="mt-4 p-4 rounded-lg"
       :class="msg.includes('Erreur') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'">
       {{ msg }}
@@ -110,7 +109,6 @@ onMounted(async () => {
     quiz.value = await res.json()
     reponses.value = Array(quiz.value.questions.length).fill(null)
   }
-  // Vérifie si le quiz a déjà été soumis
   const res2 = await fetch(`http://localhost:8000/candidat/quiz/${token}/reponses`)
   if (res2.ok) {
     const data = await res2.json()
