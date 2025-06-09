@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster Entreprise - Révolutionnez vos Recrutements</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">QuizMaster Entreprise</div>
+            <div class="nav-links">
+                <a href="#features">Fonctionnalités</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content" data-aos="fade-up">
+                <h1>L'IA au Service de vos Recrutements, en Toute Sécurité</h1>
+                <p class="hero-subtitle">Évaluez vos candidats avec une IA avancée, tout en gardant vos données 100% en
+                    local. Aucune donnée sensible ne quitte votre infrastructure.</p>
+                <div class="hero-stats">
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-text">données en local</span>
+                    </div>
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                        <span class="stat-number">0</span>
+                        <span class="stat-text">fuite de données</span>
+                    </div>
+                </div>
+                <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400">
+                    <button class="btn-primary" onclick="openDemoModal()">
+                        <span>Demander une démo</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button class="btn-secondary" onclick="openPreinscriptionModal()">
+                        <span>Rejoindre la bêta</span>
+                        <i class="fas fa-rocket"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image" data-aos="fade-left">
+                <img src="https://placehold.co/600x400" alt="Interface QuizMaster" class="floating">
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <h2 data-aos="fade-up">Une Solution IA Complète et Sécurisée</h2>
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up">
+                    <i class="fas fa-brain"></i>
+                    <h3>IA Avancée</h3>
+                    <p>Notre intelligence artificielle analyse vos fiches de poste pour générer des quiz pertinents et
+                        adaptés à chaque profil</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Données 100% Locales</h3>
+                    <p>Toutes vos données restent dans votre infrastructure. Aucune information sensible n'est envoyée à
+                        des serveurs externes</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Analyses Intelligentes</h3>
+                    <p>L'IA analyse les réponses pour vous fournir des insights détaillés sur les compétences de vos
+                        candidats</p>
+                </div>
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fas fa-lock"></i>
+                    <h3>Sécurité Maximale</h3>
+                    <p>Infrastructure sécurisée, chiffrement des données et conformité RGPD garantie</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="security-section" data-aos="fade-up">
+            <div class="security-content">
+                <h2>Vos Données, Votre Contrôle</h2>
+                <div class="security-grid">
+                    <div class="security-item">
+                        <i class="fas fa-server"></i>
+                        <h3>Hébergement Local</h3>
+                        <p>L'application est hébergée sur vos serveurs, garantissant un contrôle total sur vos données
+                        </p>
+                    </div>
+                    <div class="security-item">
+                        <i class="fas fa-user-shield"></i>
+                        <h3>Confidentialité Totale</h3>
+                        <p>Aucune donnée n'est partagée avec des tiers. Vos informations restent strictement internes
+                        </p>
+                    </div>
+                    <div class="security-item">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Conformité RGPD</h3>
+                        <p>Solution entièrement conforme aux normes de protection des données personnelles</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2 data-aos="fade-up">Prêt à révolutionner vos recrutements ?</h2>
+            <div class="contact-content">
+                <div class="contact-info" data-aos="fade-right">
+                    <h3>Parlons de votre projet</h3>
+                    <p><i class="fas fa-envelope"></i> contact@quizmaster-entreprise.com</p>
+                    <p><i class="fas fa-phone"></i> +33 1 23 45 67 89</p>
+                    <div class="contact-cta">
+                        <p>Rejoignez les entreprises qui font confiance à QuizMaster pour leurs recrutements</p>
+                        <button class="btn-primary" onclick="openDemoModal()">Demander une démo</button>
+                    </div>
+                </div>
+                <form id="contact-form" class="contact-form" data-aos="fade-left">
+                    <input type="text" placeholder="Nom" required>
+                    <input type="email" placeholder="Email" required>
+                    <textarea placeholder="Votre message" required></textarea>
+                    <button type="submit" class="btn-primary">
+                        <span>Envoyer</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <div id="demo-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Découvrez QuizMaster en action</h2>
+            <p class="modal-subtitle">Réservez une démo personnalisée et découvrez comment QuizMaster peut transformer
+                vos recrutements</p>
+            <form id="demo-form">
+                <input type="text" placeholder="Nom Complet" required>
+                <input type="email" placeholder="Email" required>
+                <input type="text" placeholder="Entreprise" required>
+                <input type="tel" placeholder="Téléphone" required>
+                <textarea placeholder="Vos besoins et objectifs" required></textarea>
+                <button type="submit" class="btn-primary">
+                    <span>Demander une démo</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="preinscription-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Rejoignez la bêta de QuizMaster</h2>
+            <p class="modal-subtitle">Soyez parmi les premiers à tester notre solution et bénéficiez d'un accès
+                privilégié</p>
+            <form id="preinscription-form">
+                <input type="text" placeholder="Nom Complet" required>
+                <input type="email" placeholder="Email" required>
+                <input type="text" placeholder="Entreprise" required>
+                <button type="submit" class="btn-primary">
+                    <span>Rejoindre la bêta</span>
+                    <i class="fas fa-rocket"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>QuizMaster Entreprise</h4>
+                <p>Solution innovante de quiz pour le recrutement</p>
+            </div>
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <a href="#features">Fonctionnalités</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h4>Suivez-nous</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 QuizMaster Entreprise. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
