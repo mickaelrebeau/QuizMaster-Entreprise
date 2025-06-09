@@ -160,10 +160,10 @@ const pieData = ref({
     {
       label: 'Distribution des scores',
       backgroundColor: [
+        '#ef4444',
+        '#f59e42',
         '#3b82f6',
         '#10b981',
-        '#f59e42',
-        '#ef4444'
       ],
       data: []
     }
