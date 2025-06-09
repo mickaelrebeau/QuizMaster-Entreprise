@@ -55,12 +55,9 @@ onMounted(async () => {
     if (handle401(res)) return
     if (res.ok) {
         quiz.value = await res.json()
-        // Récupérer les réponses des candidats pour chaque question (optionnel)
-        // On suppose un endpoint /quiz/{id}/resultats qui retourne les résultats et réponses
         const res2 = await fetch(`http://localhost:8000/quiz/${route.params.id}/resultats`)
         if (res2.ok) {
             const resultats = await res2.json()
-            // On construit un mapping question_id -> [réponses choisies]
             const map = {}
             for (const resultat of resultats) {
                 if (resultat.reponses_candidats) {
