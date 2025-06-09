@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+  <div class="bg-white rounded-lg shadow p-6 mt-12 flex flex-col items-center">
     <h2 class="text-2xl font-bold mb-4">Générer un quiz</h2>
     <form @submit.prevent="generateQuiz" class="mb-6 flex gap-2">
       <select v-model="ficheId" class="px-2 py-1 border rounded" required>
