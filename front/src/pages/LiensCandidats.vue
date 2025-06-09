@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white rounded-lg shadow p-6">
+    <div class="bg-white rounded-lg shadow p-6 mt-12">
         <h2 class="text-2xl font-bold mb-4">Liste des liens candidats</h2>
         <div class="overflow-x-auto">
             <table class="min-w-full">
@@ -32,28 +32,22 @@
             Aucun lien candidat trouvé.
         </div>
 
-        <div v-if="showModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg p-6 w-full max-w-sm">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-bold">Confirmation</h3>
-                    <button @click="showModal = false" class="text-gray-500 hover:text-gray-700">
-                        <span class="text-2xl">&times;</span>
-                    </button>
-                </div>
-                <p class="text-gray-700 mb-4">{{ modalMessage }}</p>
-                <div class="flex justify-end">
-                    <button @click="showModal = false"
-                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-                        OK
-                    </button>
-                </div>
-            </div>
-        </div>
+        <!-- Modal de confirmation -->
+        <Modal v-model="showModal" title="Confirmation">
+            <p class="text-gray-700">{{ modalMessage }}</p>
+            <template #footer>
+                <button @click="showModal = false"
+                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition w-full">
+                    OK
+                </button>
+            </template>
+        </Modal>
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import Modal from '../components/Modal.vue'
 
 const liens = ref([])
 const showModal = ref(false)
