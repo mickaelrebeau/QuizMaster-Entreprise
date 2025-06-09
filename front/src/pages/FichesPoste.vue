@@ -8,34 +8,32 @@
       </button>
     </div>
 
-    <div v-if="showModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg p-6 w-full max-w-md">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold">Nouvelle fiche de poste</h3>
-          <button @click="showModal = false" class="text-gray-500 hover:text-gray-700">
-            <span class="text-2xl">&times;</span>
-          </button>
-        </div>
+    <!-- Modal pour ajouter une fiche -->
+    <Modal v-model="showModal" title="Nouvelle fiche de poste">
+      <template #default>
         <form @submit.prevent="createFiche" class="flex flex-col gap-2">
           <input v-model="titre" placeholder="Titre" class="px-2 py-1 border rounded" required />
           <input v-model="entreprise" placeholder="Entreprise" class="px-2 py-1 border rounded" required />
           <textarea v-model="description" placeholder="Description" class="px-2 py-1 border rounded" required />
-          <div class="flex justify-end gap-2 mt-4">
-            <button type="button" @click="showModal = false"
-              class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition">
-              Annuler
-            </button>
-            <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-              Ajouter
-            </button>
-          </div>
         </form>
-      </div>
-    </div>
+      </template>
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <button type="button" @click="showModal = false"
+            class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition">
+            Annuler
+          </button>
+          <button type="submit" @click="createFiche"
+            class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+            Ajouter
+          </button>
+        </div>
+      </template>
+    </Modal>
 
     <div v-if="paginatedFiches.length === 0" class="mt-8 p-8 bg-white rounded-lg shadow text-center text-gray-500">
-      Aucunes
-      fiches de poste trouvée.</div>
+      Aucunes fiches de poste trouvée.
+    </div>
     <div v-else class="mt-8 bg-white rounded-lg shadow p-6 flex flex-col">
       <h2 class="text-2xl font-bold mb-4">Liste des fiches de poste</h2>
       <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
@@ -72,6 +70,8 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import Modal from '../components/Modal.vue'
+
 const fiches = ref([])
 const titre = ref('')
 const entreprise = ref('')
