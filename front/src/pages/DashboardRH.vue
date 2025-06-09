@@ -210,7 +210,6 @@ async function updateLineChart() {
     if (res.ok) {
       const data = await res.json()
 
-      // Formatage des dates en français
       const mois = ['Jan.', 'Fév.', 'Mar.', 'Avr.', 'Mai', 'Juin', 'Juil.', 'Août', 'Sep.', 'Oct.', 'Nov.', 'Déc.']
       lineData.value.labels = data.map(item => {
         const date = new Date(item.month)
@@ -218,7 +217,6 @@ async function updateLineChart() {
       })
       lineData.value.datasets[0].data = data.map(item => item.value)
 
-      // Mise à jour du label en fonction du type de données
       const labels = {
         quiz: 'Nombre de quiz générés',
         score: 'Moyenne des scores',
@@ -234,7 +232,6 @@ async function updateLineChart() {
 
 onMounted(async () => {
   try {
-    // Stats globales
     const res = await fetch('http://localhost:8000/stats')
     const data = await res.json()
     stats.value = data
@@ -249,13 +246,11 @@ onMounted(async () => {
       data.nb_resultats_en_attente
     ]
 
-    // Distribution des scores
     const resPie = await fetch('http://localhost:8000/stats/score-distribution')
     const dataPie = await resPie.json()
     pieData.value.labels = dataPie.map(item => item.range)
     pieData.value.datasets[0].data = dataPie.map(item => item.count)
 
-    // Évolution initiale
     await updateLineChart()
   } catch (e) {
     alert('Erreur lors du chargement des statistiques')
