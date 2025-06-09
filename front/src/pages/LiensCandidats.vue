@@ -31,6 +31,24 @@
         <div v-if="liens.length === 0" class="text-center text-gray-500 mt-4">
             Aucun lien candidat trouvé.
         </div>
+
+        <div v-if="showModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-6 w-full max-w-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">Confirmation</h3>
+                    <button @click="showModal = false" class="text-gray-500 hover:text-gray-700">
+                        <span class="text-2xl">&times;</span>
+                    </button>
+                </div>
+                <p class="text-gray-700 mb-4">{{ modalMessage }}</p>
+                <div class="flex justify-end">
+                    <button @click="showModal = false"
+                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -38,6 +56,8 @@
 import { ref, onMounted } from 'vue'
 
 const liens = ref([])
+const showModal = ref(false)
+const modalMessage = ref('')
 
 async function fetchLiens() {
     try {
@@ -53,10 +73,13 @@ async function fetchLiens() {
 function copierToken(token) {
     navigator.clipboard.writeText(token)
         .then(() => {
-            alert('Token copié dans le presse-papiers !')
+            modalMessage.value = 'Token copié dans le presse-papiers !'
+            showModal.value = true
         })
         .catch(err => {
             console.error('Erreur lors de la copie:', err)
+            modalMessage.value = 'Erreur lors de la copie du token'
+            showModal.value = true
         })
 }
 
