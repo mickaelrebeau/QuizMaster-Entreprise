@@ -1,14 +1,12 @@
 <template>
-    <div class="bg-white rounded-lg shadow p-6 flex flex-col">
+    <div class="bg-white rounded-lg shadow p-6 mt-12 flex flex-col">
         <h2 class="text-2xl font-bold mb-4">Liste des quiz générés</h2>
         <ul>
             <li v-for="quiz in quizzes" :key="quiz.id" class="mb-4 p-4 border rounded">
                 <div class="flex justify-between items-center">
                     <div class="flex flex-col mr-8 text-left">
                         <strong>{{ quiz.titre }}</strong>
-                        <br />
                         <span class="text-gray-600">Quiz ID : {{ quiz.id }}</span>
-                        <br />
                         <span class="text-gray-600">Fiche de poste ID : {{ quiz.fiche_poste_id }}</span>
                     </div>
                     <div class="flex gap-2">
