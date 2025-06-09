@@ -1,11 +1,16 @@
 <template>
-    <v-layout>
+    <div class="min-h-screen bg-gray-50">
         <Header />
-
-        <v-main class="main-content">
-            <router-view />
-        </v-main>
-    </v-layout>
+        <main class="main-content pt-20">
+            <div class="fade-in">
+                <router-view v-slot="{ Component }">
+                    <transition name="fade" mode="out-in">
+                        <component :is="Component" />
+                    </transition>
+                </router-view>
+            </div>
+        </main>
+    </div>
 </template>
 
 <script setup>
@@ -13,8 +18,16 @@ import Header from '../components/Header.vue';
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
 .main-content {
-    min-height: calc(100vh - 128px);
-    padding: 20px;
+    animation: fadeIn 0.5s ease-out;
 }
 </style>
