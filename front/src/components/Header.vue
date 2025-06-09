@@ -18,7 +18,10 @@
             <router-link to="/resultats" class="hover:underline">
                 <p class="text-black hover:text-gray-600">Résultats</p>
             </router-link>
-            <button @click="logout" class="text-white hover:text-gray-300">
+            <router-link to="/liens-candidats" class="hover:underline">
+                <p class="text-black hover:text-gray-600">Liens candidats</p>
+            </router-link>
+            <button @click="logout" class="text-black hover:text-gray-600 border border-black rounded-md px-4 py-2">
                 <p>Déconnexion</p>
             </button>
         </nav>
