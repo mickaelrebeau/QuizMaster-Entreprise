@@ -39,7 +39,8 @@ CREATE TABLE liens_candidats (
     id SERIAL PRIMARY KEY,
     quiz_id INTEGER REFERENCES quizzes(id),
     token VARCHAR NOT NULL UNIQUE,
-    email VARCHAR
+    email VARCHAR,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE resultats (
