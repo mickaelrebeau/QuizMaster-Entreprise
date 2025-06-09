@@ -1,79 +1,153 @@
 @import "tailwindcss";
 
-
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --primary-color: #3b82f6;
+  --secondary-color: #10b981;
+  --text-color: #1f2937;
+  --background-color: #f8fafc;
+  --border-color: #e5e7eb;
+  
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: #f8f8f8;
-
+  color: var(--text-color);
+  background-color: var(--background-color);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-button {
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Styles communs */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
   font-weight: 500;
-  font-family: inherit;
+  transition: all 0.3s ease;
+  border: none;
   cursor: pointer;
-  transition: border-color 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
-button:hover {
-  border-color: #646cff;
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+.btn-secondary {
+  background: white;
+  color: var(--text-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+  background: var(--background-color);
+  transform: translateY(-2px);
 }
 
 .card {
-  padding: 2em;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulaires */
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Layout */
 #app {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+/* Animations pour les éléments */
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+  
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    justify-content: center;
   }
 }
