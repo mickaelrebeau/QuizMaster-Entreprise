@@ -12,6 +12,7 @@ from typing import List
 import uvicorn
 import json
 import re
+from sqlalchemy import func
 
 app = FastAPI()
 
@@ -303,12 +304,88 @@ def get_quizzes_per_month(db: Session = Depends(get_db)):
 def get_score_distribution(db: Session = Depends(get_db)):
     return crud.score_distribution(db)
 
+@app.get("/liens-candidats")
+def get_all_liens_candidats(db: Session = Depends(get_db)):
+    liens = db.query(models.LienCandidat).all()
+    return [{
+        "id": lien.id,
+        "quiz_id": lien.quiz_id,
+        "email": lien.email,
+        "token": lien.token,
+        "date_creation": lien.date_creation if hasattr(lien, 'date_creation') else None
+    } for lien in liens]
+
 @app.delete("/quiz/{quiz_id}")
 def delete_quiz_endpoint(quiz_id: int, db: Session = Depends(get_db)):
     success = crud.delete_quiz(db, quiz_id)
     if not success:
         raise HTTPException(status_code=404, detail="Quiz non trouvé")
     return {"msg": "Quiz supprimé"}
+
+@app.get("/stats/evolution")
+def get_stats_evolution(
+    type_data: str = "quiz",  # quiz, score, liens, completion
+    months: int = 12,
+    db: Session = Depends(get_db)
+):
+    now = datetime.now()
+    start = now - timedelta(days=30*months)
+    
+    if type_data == "quiz":
+        results = (
+            db.query(
+                func.to_char(models.Quiz.date_creation, 'YYYY-MM').label('month'),
+                func.count(models.Quiz.id)
+            )
+            .filter(models.Quiz.date_creation >= start)
+            .group_by('month')
+            .order_by('month')
+            .all()
+        )
+    elif type_data == "score":
+        results = (
+            db.query(
+                func.to_char(models.Resultat.date, 'YYYY-MM').label('month'),
+                func.avg(models.Resultat.score)
+            )
+            .filter(models.Resultat.date >= start)
+            .group_by('month')
+            .order_by('month')
+            .all()
+        )
+    elif type_data == "liens":
+        results = (
+            db.query(
+                func.to_char(models.LienCandidat.date_creation, 'YYYY-MM').label('month'),
+                func.count(models.LienCandidat.id)
+            )
+            .filter(models.LienCandidat.date_creation >= start)
+            .group_by('month')
+            .order_by('month')
+            .all()
+        )
+    elif type_data == "completion":
+        # Calcul du taux de complétion par mois
+        results = []
+        current = start
+        while current <= now:
+            month = current.strftime('%Y-%m')
+            # Nombre total de liens créés ce mois
+            total_liens = db.query(models.LienCandidat).filter(
+                func.to_char(models.LienCandidat.date_creation, 'YYYY-MM') == month
+            ).count()
+            # Nombre de résultats reçus ce mois
+            resultats = db.query(models.Resultat).filter(
+                func.to_char(models.Resultat.date, 'YYYY-MM') == month
+            ).count()
+            # Calcul du taux
+            taux = (resultats / total_liens * 100) if total_liens > 0 else 0
+            results.append((month, taux))
+            current = (current.replace(day=1) + timedelta(days=32)).replace(day=1)
+    else:
+        raise HTTPException(status_code=400, detail="Type de données invalide")
+    
+    return [{"month": r[0], "value": float(r[1])} for r in results]
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
