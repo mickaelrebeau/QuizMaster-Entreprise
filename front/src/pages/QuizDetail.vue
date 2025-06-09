@@ -1,5 +1,5 @@
 <template>
-    <div v-if="quiz" class="bg-white rounded-lg shadow p-6 flex flex-col">
+    <div v-if="quiz" class="bg-white rounded-lg shadow p-6 mt-12 flex flex-col">
         <h2 class="text-2xl font-bold mb-4">Détail du quiz : {{ quiz.titre }}</h2>
         <div class="mb-2 text-gray-600">ID : {{ quiz.id }} | Fiche de poste ID : {{ quiz.fiche_poste_id }}</div>
         <ul>
