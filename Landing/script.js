@@ -8,7 +8,7 @@ const demoModal = document.getElementById("demo-modal");
 const preinscriptionModal = document.getElementById("preinscription-modal");
 const closeButtons = document.querySelectorAll(".close");
 
-const API_BASE_URL = "https://quizmaster-landing-backend.up.railway.app/";
+const API_BASE_URL = "https://quizmaster-landing-backend.up.railway.app";
 
 function openDemoModal() {
   demoModal.style.display = "flex";
