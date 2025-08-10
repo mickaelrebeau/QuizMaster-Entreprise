@@ -1,14 +1,14 @@
-// Initialisation des animations AOS
 AOS.init({
   duration: 800,
   once: true,
   offset: 100,
 });
 
-// Gestion des modales
 const demoModal = document.getElementById("demo-modal");
 const preinscriptionModal = document.getElementById("preinscription-modal");
 const closeButtons = document.querySelectorAll(".close");
+
+const API_BASE_URL = "https://quizmaster-landing-backend.railway.app";
 
 function openDemoModal() {
   demoModal.style.display = "flex";
@@ -32,7 +32,6 @@ closeButtons.forEach((button) => {
   });
 });
 
-// Fermer les modales en cliquant en dehors
 window.addEventListener("click", (e) => {
   if (e.target === demoModal) {
     closeModal(demoModal);
@@ -42,7 +41,6 @@ window.addEventListener("click", (e) => {
   }
 });
 
-// Gestion des formulaires
 const demoForm = document.getElementById("demo-form");
 const preinscriptionForm = document.getElementById("preinscription-form");
 const contactForm = document.getElementById("contact-form");
@@ -51,8 +49,14 @@ async function handleFormSubmit(form, endpoint) {
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
+  // Afficher un indicateur de chargement
+  const submitButton = form.querySelector('button[type="submit"]');
+  const originalText = submitButton.innerHTML;
+  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
+  submitButton.disabled = true;
+
   try {
-    const response = await fetch(endpoint, {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,18 +65,74 @@ async function handleFormSubmit(form, endpoint) {
     });
 
     if (response.ok) {
-      alert("Votre message a été envoyé avec succès !");
+      const result = await response.json();
+      showSuccessMessage(
+        result.message || "Votre message a été envoyé avec succès !"
+      );
       form.reset();
       if (form.closest(".modal")) {
         closeModal(form.closest(".modal"));
       }
     } else {
-      throw new Error("Erreur lors de l'envoi du formulaire");
+      const errorData = await response.json();
+      throw new Error(
+        errorData.error || "Erreur lors de l'envoi du formulaire"
+      );
     }
   } catch (error) {
-    alert("Une erreur est survenue. Veuillez réessayer.");
+    showErrorMessage(
+      error.message || "Une erreur est survenue. Veuillez réessayer."
+    );
     console.error("Erreur:", error);
+  } finally {
+    // Restaurer le bouton
+    submitButton.innerHTML = originalText;
+    submitButton.disabled = false;
   }
+}
+
+// Fonction pour afficher les messages de succès
+function showSuccessMessage(message) {
+  const toast = document.createElement("div");
+  toast.className = "toast success";
+  toast.innerHTML = `
+    <i class="fas fa-check-circle"></i>
+    <span>${message}</span>
+  `;
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add("show");
+  }, 100);
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+    setTimeout(() => {
+      document.body.removeChild(toast);
+    }, 300);
+  }, 3000);
+}
+
+// Fonction pour afficher les messages d'erreur
+function showErrorMessage(message) {
+  const toast = document.createElement("div");
+  toast.className = "toast error";
+  toast.innerHTML = `
+    <i class="fas fa-exclamation-circle"></i>
+    <span>${message}</span>
+  `;
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add("show");
+  }, 100);
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+    setTimeout(() => {
+      document.body.removeChild(toast);
+    }, 300);
+  }, 5000);
 }
 
 demoForm.addEventListener("submit", (e) => {
@@ -90,7 +150,6 @@ contactForm.addEventListener("submit", (e) => {
   handleFormSubmit(contactForm, "/api/contact");
 });
 
-// Animation du header au scroll
 const header = document.querySelector("header");
 let lastScroll = 0;
 
@@ -103,21 +162,18 @@ window.addEventListener("scroll", () => {
   }
 
   if (currentScroll > lastScroll && !header.classList.contains("scroll-down")) {
-    // Scroll vers le bas
     header.classList.remove("scroll-up");
     header.classList.add("scroll-down");
   } else if (
     currentScroll < lastScroll &&
     header.classList.contains("scroll-down")
   ) {
-    // Scroll vers le haut
     header.classList.remove("scroll-down");
     header.classList.add("scroll-up");
   }
   lastScroll = currentScroll;
 });
 
-// Animation des statistiques
 const stats = document.querySelectorAll(".stat-number");
 let animated = false;
 
@@ -146,7 +202,6 @@ function animateStats() {
   animated = true;
 }
 
-// Observer pour déclencher l'animation des stats
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -163,7 +218,6 @@ if (statsSection) {
   observer.observe(statsSection);
 }
 
-// Animation au scroll
 const observerOptions = {
   threshold: 0.1,
 };
@@ -180,7 +234,6 @@ document.querySelectorAll(".feature-card, .pricing-card").forEach((el) => {
   observerAnimation.observe(el);
 });
 
-// Smooth scroll pour les liens d'ancrage
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
     e.preventDefault();

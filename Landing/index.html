@@ -48,9 +48,6 @@
                     </button>
                 </div>
             </div>
-            <div class="hero-image" data-aos="fade-left">
-                <img src="https://placehold.co/600x400" alt="Interface QuizMaster" class="floating">
-            </div>
         </section>
 
         <section id="features" class="features">
@@ -111,18 +108,19 @@
             <h2 data-aos="fade-up">Prêt à révolutionner vos recrutements ?</h2>
             <div class="contact-content">
                 <div class="contact-info" data-aos="fade-right">
-                    <h3>Parlons de votre projet</h3>
-                    <p><i class="fas fa-envelope"></i> contact@quizmaster-entreprise.com</p>
-                    <p><i class="fas fa-phone"></i> +33 1 23 45 67 89</p>
+                    <div class="contact-info-item">
+                        <h3>Parlons de votre projet</h3>
+                        <p><i class="fas fa-envelope"></i> rebeau.mickael@gmail.com</p>
+                    </div>
                     <div class="contact-cta">
                         <p>Rejoignez les entreprises qui font confiance à QuizMaster pour leurs recrutements</p>
                         <button class="btn-primary" onclick="openDemoModal()">Demander une démo</button>
                     </div>
                 </div>
                 <form id="contact-form" class="contact-form" data-aos="fade-left">
-                    <input type="text" placeholder="Nom" required>
-                    <input type="email" placeholder="Email" required>
-                    <textarea placeholder="Votre message" required></textarea>
+                    <input name="name" type="text" placeholder="Nom" required>
+                    <input name="email" type="email" placeholder="Email" required>
+                    <textarea name="message" placeholder="Votre message" required></textarea>
                     <button type="submit" class="btn-primary">
                         <span>Envoyer</span>
                         <i class="fas fa-paper-plane"></i>
@@ -139,10 +137,10 @@
             <p class="modal-subtitle">Réservez une démo personnalisée et découvrez comment QuizMaster peut transformer
                 vos recrutements</p>
             <form id="demo-form">
-                <input type="text" placeholder="Nom Complet" required>
-                <input type="email" placeholder="Email" required>
-                <input type="text" placeholder="Entreprise" required>
-                <input type="tel" placeholder="Téléphone" required>
+                <input name="name" type="text" placeholder="Nom Complet" required>
+                <input name="email" type="email" placeholder="Email" required>
+                <input name="company" type="text" placeholder="Entreprise" required>
+                <input name="phone" type="tel" placeholder="Téléphone" required>
                 <textarea placeholder="Vos besoins et objectifs" required></textarea>
                 <button type="submit" class="btn-primary">
                     <span>Demander une démo</span>
@@ -159,9 +157,9 @@
             <p class="modal-subtitle">Soyez parmi les premiers à tester notre solution et bénéficiez d'un accès
                 privilégié</p>
             <form id="preinscription-form">
-                <input type="text" placeholder="Nom Complet" required>
-                <input type="email" placeholder="Email" required>
-                <input type="text" placeholder="Entreprise" required>
+                <input name="name" type="text" placeholder="Nom Complet" required>
+                <input name="email" type="email" placeholder="Email" required>
+                <input name="company" type="text" placeholder="Entreprise" required>
                 <button type="submit" class="btn-primary">
                     <span>Rejoindre la bêta</span>
                     <i class="fas fa-rocket"></i>
@@ -184,9 +182,12 @@
             <div class="footer-section">
                 <h4>Suivez-nous</h4>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a target="_blank" href="https://github.com/mickaelrebeau"><i class="fab fa-github"></i></a>
+                    <a target="_blank" href="https://www.linkedin.com/in/mickael-r%C3%A9beau/"><i class="fab fa-linkedin"></i></a>
+                    <a target="_blank" href="https://www.instagram.com/mike_photocollection/"><i class="fab fa-instagram"></i></a>
+                    <a target="_blank" href="https://discord.gg/ezdVCxJY"><i class="fab fa-discord"></i></a>
+                    <a target="_blank" href="https://mike-dreeman-portfolio.vercel.app/"><i class="fa-solid fa-globe"></i></a>
+
                 </div>
             </div>
         </div>

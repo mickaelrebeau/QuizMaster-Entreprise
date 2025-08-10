@@ -85,17 +85,15 @@ nav {
     padding: 8rem 2rem 4rem;
     max-width: 1200px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
     align-items: center;
 }
 
 .hero-content {
-    max-width: 600px;
+    max-width: 1200px;
 }
 
 .hero h1 {
+    max-width: 1000px;
     font-size: 3.5rem;
     line-height: 1.2;
     margin-bottom: 1.5rem;
@@ -113,7 +111,7 @@ nav {
 
 .hero-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
     margin-bottom: 3rem;
 }
@@ -220,12 +218,16 @@ nav {
     gap: 4rem;
 }
 
-.contact-info h3 {
+.contact-info-item {
+    padding: 0 2rem;
+}
+
+.contact-info-item h3 {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
-.contact-info p {
+.contact-info-item p {
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -240,10 +242,20 @@ nav {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
+.contact-cta p {
+    margin-bottom: 1rem;
+}
+
 .contact-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
 }
 
 /* Buttons */
@@ -508,4 +520,64 @@ footer {
     .security-content h2 {
         font-size: 2rem;
     }
-} 
+}
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 10000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast.success {
+    background: var(--success-color);
+}
+
+.toast.error {
+    background: var(--error-color);
+}
+
+.toast i {
+    font-size: 1.2rem;
+}
+
+/* Loading spinner */
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive toast */
+@media (max-width: 768px) {
+    .toast {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        transform: translateY(-100%);
+    }
+    
+    .toast.show {
+        transform: translateY(0);
+    }
+}
