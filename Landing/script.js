@@ -49,7 +49,6 @@ async function handleFormSubmit(form, endpoint) {
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
-  // Afficher un indicateur de chargement
   const submitButton = form.querySelector('button[type="submit"]');
   const originalText = submitButton.innerHTML;
   submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
@@ -85,13 +84,11 @@ async function handleFormSubmit(form, endpoint) {
     );
     console.error("Erreur:", error);
   } finally {
-    // Restaurer le bouton
     submitButton.innerHTML = originalText;
     submitButton.disabled = false;
   }
 }
 
-// Fonction pour afficher les messages de succès
 function showSuccessMessage(message) {
   const toast = document.createElement("div");
   toast.className = "toast success";
@@ -113,7 +110,6 @@ function showSuccessMessage(message) {
   }, 3000);
 }
 
-// Fonction pour afficher les messages d'erreur
 function showErrorMessage(message) {
   const toast = document.createElement("div");
   toast.className = "toast error";
