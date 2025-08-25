@@ -64,6 +64,8 @@ class Quiz(QuizBase):
     class Config:
         orm_mode = True
 
+# --- Schémas existants ---
+
 class LienCandidatBase(BaseModel):
     quiz_id: int
     email: EmailStr
