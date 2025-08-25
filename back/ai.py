@@ -57,6 +57,65 @@ Une seule réponse correcte par question.
             print("Erreur lors de l'appel à Ollama :", e)
             return {"error": str(e)}
 
+async def generate_quiz_from_content(content: str, question_count: int = 10):
+    """
+    Génère un quiz à partir du contenu d'une page web
+    """
+    prompt = f'''
+Tu es un générateur de quiz intelligent.
+Génère un quiz de {question_count} questions basé sur le contenu suivant.
+Chaque question doit être de type QCM avec 4 réponses possibles.
+Une seule réponse correcte par question.
+
+Contenu à analyser :
+{content}
+
+**IMPORTANT** :
+- Retourne UNIQUEMENT un objet JSON valide, sans aucun texte avant ou après, sans commentaire, sans explication.
+- Le JSON doit être strictement de la forme :
+{{
+    "questions": [
+        {{
+            "question": "...",
+            "reponses": ["...", "...", "...", "..."],
+            "reponse_correcte": "..."
+        }}
+    ]
+}}
+- Les questions doivent être variées et couvrir différents aspects du contenu.
+- Les réponses incorrectes doivent être plausibles mais fausses.
+- N'ajoute rien d'autre que ce JSON.
+- N'utilise pas de balises de code, pas de markdown, pas de texte hors JSON.
+'''
+    payload = {
+        "model": OLLAMA_MODEL,
+        "messages": [
+            {"role": "user", "content": prompt}
+        ]
+    }
+    headers = {"Content-Type": "application/json"}
+    async with httpx.AsyncClient() as client:
+        try:
+            # On active le stream
+            async with client.stream("POST", OLLAMA_URL, json=payload, headers=headers, timeout=120) as response:
+                response.raise_for_status()
+                full_message = ""
+                async for line in response.aiter_lines():
+                    if not line.strip():
+                        continue
+                    # Chaque ligne est un JSON
+                    data = json.loads(line)
+                    # On assemble le message
+                    if "message" in data and "content" in data["message"]:
+                        full_message += data["message"]["content"]
+                if not full_message:
+                    raise ValueError("Aucune réponse utile reçue d'Ollama.")
+                print(f"Quiz généré depuis le contenu web: {full_message[:200]}...")
+                return {"message": full_message}
+        except Exception as e:
+            print("Erreur lors de l'appel à Ollama pour le contenu web :", e)
+            return {"error": str(e)}
+
 # Placeholder pour l'entraînement du modèle sur des données d'entreprise
 async def train_model_on_company_data(company_id: int, data: str):
     # Ici, tu pourrais appeler une API Ollama ou un script pour fine-tuner le modèle
