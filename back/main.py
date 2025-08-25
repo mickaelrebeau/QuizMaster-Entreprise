@@ -147,6 +147,12 @@ async def generer_quiz(fiche_id: int, db: Session = Depends(get_db)):
     quiz = crud.create_quiz(db, quiz_data, createur_id=1)  # TODO: remplacer par l'ID du RH connecté
     return {"quiz_id": quiz.id}
 
+# --- Endpoint de santé pour l'extension ---
+@app.get("/health")
+def health_check():
+    """Endpoint de santé pour vérifier que l'API est accessible"""
+    return {"status": "healthy", "service": "QuizMaster API"}
+
 # --- Récupération d'un quiz ---
 @app.get("/quiz/{quiz_id}", response_model=schemas.Quiz)
 def get_quiz(quiz_id: int, db: Session = Depends(get_db)):
